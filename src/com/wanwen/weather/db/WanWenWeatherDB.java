@@ -12,6 +12,11 @@ import com.wanwen.weather.domain.City;
 import com.wanwen.weather.domain.County;
 import com.wanwen.weather.domain.Province;
 
+/**
+ * 创建构造方法 从数据库读取信息
+ * @author Administrator
+ *
+ */
 public class WanWenWeatherDB {
 
 	/**
@@ -53,6 +58,18 @@ public class WanWenWeatherDB {
 		}
 
 		return wanWenWeatherDB;
+	}
+	
+	/**
+	 * 将Province实例存储到数据库
+	 */
+	public void saveProvince(Province province) {
+		if (province != null) {
+			ContentValues values = new ContentValues();
+			values.put("province_name", province.getProvinceName());
+			values.put("province_code", province.getProvinceCode());
+			db.insert("province", null, values);
+		}
 	}
 
 	/**
