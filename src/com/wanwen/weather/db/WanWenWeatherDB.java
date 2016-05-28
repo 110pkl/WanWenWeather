@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.wanwen.weather.domain.AddCity;
 import com.wanwen.weather.domain.City;
 import com.wanwen.weather.domain.County;
 import com.wanwen.weather.domain.Province;
@@ -67,7 +68,6 @@ public class WanWenWeatherDB {
 		if (province != null) {
 			ContentValues values = new ContentValues();
 			values.put("province_name", province.getProvinceName());
-			values.put("province_code", province.getProvinceCode());
 			db.insert("province", null, values);
 		}
 	}
@@ -79,15 +79,13 @@ public class WanWenWeatherDB {
 
 		List<Province> list = new ArrayList<Province>();
 		Cursor cursor = db
-				.query("province", null, null, null, null, null, null);
+				.query("Province", null, null, null, null, null, null);
 		if (cursor.moveToFirst()) {
 			do {
 				Province province = new Province();
 				province.setId(cursor.getInt(cursor.getColumnIndex("id")));
 				province.setProvinceName(cursor.getString(cursor
 						.getColumnIndex("province_name")));
-				province.setProvinceCode(cursor.getString(cursor
-						.getColumnIndex("province_code")));
 				list.add(province);
 
 			} while (cursor.moveToNext());
@@ -173,6 +171,21 @@ public class WanWenWeatherDB {
 
 		return list;
 
+	}
+	
+	/**
+	 * 选中的城市添加到数据库
+	 */
+	public void saveAddCity(AddCity addCity) {
+		if (addCity != null) {
+			ContentValues values = new ContentValues();
+			try {
+				values.put("city_name", addCity.getCityName());
+				db.insert("AddCity", null, values);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
